@@ -15,3 +15,5 @@ manifest:
     - name: cirque-input-module
       remote: halfdane
       revision: main
+  self:
+    path: config
