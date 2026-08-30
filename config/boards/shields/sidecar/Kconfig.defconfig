@@ -1,0 +1,6 @@
+if SHIELD_SIDECAR
+
+config ZMK_KEYBOARD_NAME
+    default "Glove80 Sidecar"
+
+endif
