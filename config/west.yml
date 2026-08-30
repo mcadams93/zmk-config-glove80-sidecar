@@ -9,9 +9,11 @@ manifest:
       remote: zmkfirmware
       revision: v0.3
       import: app/west.yml
+    # This project contains include/dt-bindings/zmk/input_gestures.h
     - name: zmk-input-gestures
       remote: halfdane
       revision: main
+    # Absolute mode Cirque driver fork
     - name: cirque-input-module
       remote: halfdane
       revision: main
