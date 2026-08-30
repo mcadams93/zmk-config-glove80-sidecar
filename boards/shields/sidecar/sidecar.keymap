@@ -1,31 +1,18 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
-#include <dt-bindings/zmk/input_gestures.h>
 
 &zip_gestures {
-    /* 1. Primary Tap & Double-Tap -> Left Click */
     tap-detection;
-    tap-timeout-ms = <130>;
+    tap-timout-ms = <130>;
     prevent_movement_during_tap;
-
-    /* 2. Bottom-Right Quadrant -> Right Click */
-    // Targets the bottom 35% Y and right 35% X quadrant (x: 665-1024, y: 0-358)
-    right-click-tap-zone;
-    right-click-min-x = <665>;
-    right-click-max-x = <1024>;
-    right-click-min-y = <0>;
-    right-click-max-y = <358>;
-
-    /* 3. 12% Outer Edge Circular Scroll */
     circular-scroll;
     circular-scroll-rim-percent = <12>;
     circular-scroll-width = <1024>;
     circular-scroll-height = <1024>;
-
-    /* 4. Smooth Tracking */
     inertial-cursor;
     inertial-cursor-decay-percent = <96>;
+    wait-for-new-position-ms = <30>;
 };
 
 / {

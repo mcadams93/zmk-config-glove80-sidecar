@@ -1,41 +1,29 @@
-#include <dt-bindings/zmk/input_transform.h>
+#include <behaviors/input_processor_absolute_to_relative.dtsi>
+#include <behaviors/input_processor_gestures.dtsi>
 
 &i2c0 {
     status = "okay";
-    
-    // Hardware I2C address for Cirque (0x2A)
+
     glidepoint: glidepoint@2a {
         compatible = "cirque,pinnacle";
         reg = <0x2a>;
         status = "okay";
-        
-        // Data Ready GPIO Pin (Adjust according to your Grove Shield routing)
-        dr-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH)>;
-        
-        // Expose full 0-1024 absolute matrix to halfdane engine
+
+        dr-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
         absolute-mode;
         absolute-mode-scale-to-width = <1024>;
         absolute-mode-scale-to-height = <1024>;
+        absolute-mode-clamp-min-x = <0>;
+        absolute-mode-clamp-max-x = <2047>;
+        absolute-mode-clamp-min-y = <0>;
+        absolute-mode-clamp-max-y = <1535>;
     };
 };
 
 / {
-    // Pipeline Step 1: Gesture Engine Engine Interception
-    glidepoint_gestures {
+    glidepoint_listener: glidepoint_listener {
         compatible = "zmk,input-listener";
         device = <&glidepoint>;
-        input-processors = <&zip_gestures>;
-    };
-
-    // Pipeline Step 2: Convert Absolute Movement into standard Mouse Cursor
-    glidepoint_transform {
-        compatible = "zmk,input-processor-transform-absolute-to-relative";
-        device = <&glidepoint>;
-    };
-
-    // Pipeline Step 3: Pass Output to HID Host
-    trackpad_listener {
-        compatible = "zmk,input-listener";
-        device = <&glidepoint>;
+        input-processors = <&zip_gestures &zip_absolute_to_relative>;
     };
 };
