@@ -1,81 +1,80 @@
-# 🛸 Standalone ZMK Bluetooth Cirque Trackpad (SPI Mode)
+# Glove80 Sidecar - ZMK Bluetooth Cirque Trackpad
 
-An open-source, standalone wireless trackpad built using the **Seeed Studio XIAO BLE (nRF52840)** microcontroller and a **40mm Cirque GlidePoint Trackpad** running mainline ZMK firmware. 
+An open-source, standalone wireless trackpad built using the **Seeed Studio XIAO BLE (nRF52840)** microcontroller and a **40mm Cirque GlidePoint Trackpad** running mainline ZMK firmware. Designed as a peripheral sidecar companion for the MoErgo Glove80 keyboard.
 
-This build utilizes high-speed **SPI Communication Mode**, which complies natively with standard ZMK pointing drivers to offer fast tracking refresh rates, smooth pointer navigation, and rock-solid compilation without relying on custom backend configuration patches.
+This build uses **SPI communication mode** with direct wire connections to the trackpad test pads. No adapter board, OLED socket, or pull-up resistors needed. The trackpad ships in SPI mode by default — no resistor changes required.
 
-### ✨ Gestures Included
+### Gestures Included
 * **Tap-to-Click:** Supported natively anywhere on the inner circle surface.
 * **Double-Tap:** Supported natively anywhere on the inner circle surface.
 * **Right-Click:** Activated by tapping your finger specifically inside the **bottom-right quadrant** zone.
 * **Circular Rim Scrolling:** Trace your finger in an arc around the outermost **12% edge** of the circle (Clockwise to scroll Down, Counter-Clockwise to scroll Up).
+* **Inertial Cursor:** Flicking your finger and lifting off keeps the cursor gliding in the same direction, gradually decelerating.
 
 ---
 
-## 📦 European Sourcing Checklist
-
-To minimize international shipping fees, avoid customs import duties, and bypass long transit delivery delays inside the EU, electronics can be ordered together from Amazon Germany, and the keyboard tracking module from Keycapsss.
+## Parts List
 
 | Component | Purpose | Sourcing Reference |
 | :--- | :--- | :--- |
-| **Seeed Studio XIAO BLE Sense** | Main Microcontroller (with pre-soldered headers) | [Amazon Germany](https://amazon.de) |
-| **Seeed Studio Grove Shield** | Expansion base breakout with built-in power switch | [Amazon Germany](https://amazon.de) |
+| **Seeed Studio XIAO BLE (Sense)** | Main Microcontroller | [Amazon Germany](https://amazon.de) |
 | **EEMB 3.7V 1S 250mAh Battery** | Rechargable Lithium Polymer battery | [Amazon Germany](https://amazon.de) |
-| **LightingWill 30 AWG Wires** | Ultra-flexible heat-resistant silicone soldering wires | [Amazon Germany](https://amazon.de) |
-| **40mm Cirque GlidePoint Kit** | Circular trackpad module & FFC adapter breakout board | [Keycapsss](https://keycapsss.com) |
+| **30 AWG silicone wire** | 7 wires for SPI + power + DR | [Amazon Germany](https://amazon.de) |
+| **40mm Cirque GlidePoint Trackpad** | Trackpad only, no adapter needed | [Keycapsss](https://keycapsss.com) |
 
 ---
 
-## 🔌 Hardware Configuration & Wiring Guide
+## Hardware Wiring Guide
 
-### ⚠️ Step 1: Confirm SPI Solder Jumper Configuration
-Most Cirque GlidePoint trackpads ship set to SPI mode out-of-the-box. Before soldering wires, turn the circular trackpad over to visually inspect the back circuit board:
-* Ensure that the surface resistor pad labeled **R1** is **Closed/Bridged** (Enables SPI communication mode).
-* Ensure that the surface resistor pad labeled **R2** remains **Open/Disconnected** (Disables I2C communication mode).
+Solder 30 AWG wires directly from the XIAO BLE pads to the test pads on the back of the Cirque trackpad PCB. See the [Cirque Pinnacle pinout reference](https://cirquepinnacle.readthedocs.io/en/latest/#pinout) for a photo of the trackpad test pad locations.
 
-### ⚡ Step 2: The Solder Routing Blueprint
-Press your Seeed Studio XIAO BLE module into the female sockets on top of your Grove Shield. Use your 30 AWG silicone wires to route the power and data signal matrices. 
+SPI is remapped so that power + all 4 SPI signals are on 6 consecutive pads on the right side of the XIAO BLE. Only DR is on the left side:
 
-*Slide a small piece of the included 4mm heat-shrink tubing onto each wire prior to heating up the joint, then solder the lines using this specific pinout mapping:*
+```
+Left side          Right side
+---------          ----------
+  D0  ← DR          5V
+  D1                 GND  ← trackpad GND
+  D2                 3V3  ← trackpad VDD
+  D3                 D10  ← SCK
+  D4                 D9   ← MOSI (SI)
+  D5                 D8   ← MISO (SO)
+  D6                 D7   ← CS (SS)
+```
 
-#### 🔋 Power Configuration
-* Solder the **Red (Positive)** wire of your LiPo battery to the pad marked **`BAT+`** on the back underside of the Grove Shield.
-* Solder the **Black (Negative)** wire of your LiPo battery to the pad marked **`GND`** on the back underside of the Grove Shield.
+| XIAO BLE Pad | nRF52840 GPIO | SPI Signal | Trackpad Test Pad |
+| :--- | :--- | :--- | :--- |
+| **GND** (right side) | — | Ground | GND (FFC pin 11) |
+| **3V3** (right side) | — | Power | VDD (FFC pin 12) |
+| **D10** (right side) | P1.15 | SCK | SCK (FFC pin 1) |
+| **D9** (right side) | P1.14 | MOSI | SI (FFC pin 5) |
+| **D8** (right side) | P1.13 | MISO | SO (FFC pin 2) |
+| **D7** (right side) | P1.12 | CS | SS (FFC pin 3) |
+| **D0** (left side) | P0.02 | DR | DR (FFC pin 4) |
 
-#### 📊 Data Bus Signal Mapping
-Route your flexible silicone lines from the side pin header columns of the Grove Shield over to the corresponding solder loops on your Keycapsss FFC adapter breakout board:
+### Battery
+Solder the battery wires to the **BAT+** and **BAT-** pads on the bottom of the XIAO BLE. The XIAO has a built-in charge controller — it charges via USB-C automatically.
 
-| Seeed Studio Grove Shield Pin | Wire Line Route | Cirque FFC Breakout Board Pad |
-| :--- | :---: | :--- |
-| **3.3V** | ➡️ | **VCC** (System Power Input) |
-| **GND** | ➡️ | **GND** (System Ground Loop) |
-| **D5** | ➡️ | **SCK** (SPI Master Clock) |
-| **D10** | ➡️ | **MOSI / SDI** (Serial Data In) |
-| **D9** | ➡️ | **MISO / SDO** (Serial Data Out) |
-| **D2** | ➡️ | **CS / SS** (Chip / Slave Select) |
-| **D3** | ➡️ | **DR** (Data Ready Interrupt Line) |
-
----
-
-## 🛠️ Software Gestures Map
-
-All interaction is routed directly to the trackpad skin surface via absolute coordinate translation. No extra mechanical mouse buttons are needed:
-
-* 🖱️ **Pointer Movement:** Glide your index finger anywhere across the broad **inner 88%** surface of the circular overlay.
-* 👆 **Left Click:** Tap once quickly anywhere on the inner circle surface.
-* ✌️ **Double Click:** Tap twice quickly anywhere on the inner circle surface.
-* 📑 **Right Click:** Tap once quickly specifically inside the **bottom-right quadrant** area of the circle surface.
-* 🌀 **Circular Scrolling:** Place your finger directly onto the outermost **12% rim/edge** of the trackpad. Tracing your finger in a **clockwise** circle scrolls downwards; tracing an arc **counter-clockwise** scrolls upwards.
+There is no power switch in this build. The firmware uses ZMK deep sleep (`CONFIG_ZMK_SLEEP=y`) to minimize power consumption during idle periods. For long-term storage, disconnect the battery.
 
 ---
 
-## 🚀 Flashing the Firmware
+## Software Gestures Map
 
-Once your GitHub Action finishes compiling successfully, download and flash the payload using these steps:
-1. Extract the downloaded `firmware.zip` folder from your repository artifacts section to locate the **`xiao_ble-zmk.uf2`** asset.
-2. Link your stacked XIAO BLE board to your PC using a standard USB-C data cable.
-3. Use a tweezer tip or a small paperclip to press the tiny physical **Reset Button** on the side of the board twice rapidly.
-4. The device will reboot and mount on your computer's filesystem as an external flash thumb drive named **`XIAO-SENSE`**.
-5. Drag and drop your **`xiao_ble-zmk.uf2`** file directly into the drive directory window.
-6. The board will swallow the payload, automatically flash its internal flash sector storage, and unmount. 
-7. Turn on your hardware power switch, pair it via your computer's native Bluetooth settings panel, and your custom wireless trackpad is ready for action!
+* **Pointer Movement:** Glide your index finger anywhere across the broad **inner 88%** surface of the circular overlay.
+* **Left Click:** Tap once quickly anywhere on the inner circle surface.
+* **Double Click:** Tap twice quickly anywhere on the inner circle surface.
+* **Right Click:** Tap once quickly specifically inside the **bottom-right quadrant** area of the circle surface.
+* **Circular Scrolling:** Place your finger directly onto the outermost **12% rim/edge** of the trackpad. Tracing your finger in a **clockwise** circle scrolls downwards; tracing an arc **counter-clockwise** scrolls upwards.
+
+---
+
+## Flashing the Firmware
+
+1. Extract the downloaded `firmware.zip` from your repository artifacts to locate the **`sidecar-seeeduino_xiao_ble-zmk.uf2`** asset.
+2. Link your XIAO BLE board to your PC using a USB-C data cable.
+3. Press the tiny physical **Reset Button** on the side of the board twice rapidly.
+4. The device will reboot and mount as a flash drive named **`XIAO-SENSE`**.
+5. Drag and drop your **`sidecar-seeeduino_xiao_ble-zmk.uf2`** file into the drive.
+6. The board will flash and unmount automatically.
+7. Pair via your computer's Bluetooth settings — the device appears as **"Glove80 Sidecar"**.

@@ -6,6 +6,8 @@ on:
       - 'config/**'
       - 'boards/**'
       - 'build.yaml'
+      - 'west.yml'
+      - 'zephyr/**'
       - '.github/workflows/build.yml'
   workflow_dispatch:
 

@@ -11,9 +11,12 @@ manifest:
       import: app/west.yml
     - name: zmk-input-gestures
       remote: halfdane
-      revision: main
+      revision: c6590627ec627f49582ee945b880762fc715c2c9
+    - name: zmk-input-processors
+      remote: halfdane
+      revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
     - name: cirque-input-module
       remote: halfdane
-      revision: main
+      revision: 97676777223730abfa0e99c8d20a1ded70cb15fa
   self:
     path: config
