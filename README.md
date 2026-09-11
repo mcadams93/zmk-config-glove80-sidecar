@@ -7,9 +7,15 @@ This build uses **SPI communication mode** with direct wire connections to the t
 ### Gestures Included
 * **Tap-to-Click:** Supported natively anywhere on the inner circle surface.
 * **Double-Tap:** Supported natively anywhere on the inner circle surface.
-* **Right-Click:** Activated by tapping your finger specifically inside the **bottom-right quadrant** zone.
 * **Circular Rim Scrolling:** Trace your finger in an arc around the outermost **12% edge** of the circle (Clockwise to scroll Down, Counter-Clockwise to scroll Up).
 * **Inertial Cursor:** Flicking your finger and lifting off keeps the cursor gliding in the same direction, gradually decelerating.
+
+### Input Processing
+
+Mouse and scroll input pass through an input-processor chain after the absolute-to-relative conversion:
+
+* **Movement scaling:** `&zip_xy_scaler 1 2` scales cursor movement to **1/2 speed**.
+* **Scroll scaling:** `&zip_scroll_scaler 1 3` scales scroll input to **1/3 speed**.
 
 ---
 
@@ -64,7 +70,6 @@ There is no power switch in this build. The firmware uses ZMK deep sleep (`CONFI
 * **Pointer Movement:** Glide your index finger anywhere across the broad **inner 88%** surface of the circular overlay.
 * **Left Click:** Tap once quickly anywhere on the inner circle surface.
 * **Double Click:** Tap twice quickly anywhere on the inner circle surface.
-* **Right Click:** Tap once quickly specifically inside the **bottom-right quadrant** area of the circle surface.
 * **Circular Scrolling:** Place your finger directly onto the outermost **12% rim/edge** of the trackpad. Tracing your finger in a **clockwise** circle scrolls downwards; tracing an arc **counter-clockwise** scrolls upwards.
 
 ---
