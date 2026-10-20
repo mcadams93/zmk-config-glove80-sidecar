@@ -5,6 +5,7 @@ on:
     paths:
       - 'config/**'
       - 'boards/**'
+      - 'drivers/**'
       - 'build.yaml'
       - 'west.yml'
       - 'zephyr/**'
