@@ -50,7 +50,7 @@
         absolute-tap-drag-timeout-ms = <300>;
 
         absolute-right-edge-scroll-enable;
-        absolute-scroll-zone = <360>;
+        absolute-scroll-zone = <240>;
         absolute-scroll-divisor = <40>;
 
         sleep-mode-enable;
