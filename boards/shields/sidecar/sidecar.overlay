@@ -33,18 +33,18 @@
     glidepoint: glidepoint@0 {
         compatible = "cirque,pinnacle";
         reg = <0>;
-        spi-max-frequency = <10000000>;
+        spi-max-frequency = <1000000>;
         status = "okay";
 
         dr-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
-        sensitivity = "2x";
+        sensitivity = "1x";
         absolute-mode;
         absolute-mode-scale-to-width = <1024>;
         absolute-mode-scale-to-height = <1024>;
-        absolute-mode-clamp-min-x = <0>;
-        absolute-mode-clamp-max-x = <2047>;
-        absolute-mode-clamp-min-y = <0>;
-        absolute-mode-clamp-max-y = <1535>;
+        absolute-mode-clamp-min-x = <128>;
+        absolute-mode-clamp-max-x = <1920>;
+        absolute-mode-clamp-min-y = <64>;
+        absolute-mode-clamp-max-y = <1472>;
     };
 };
 
@@ -54,7 +54,6 @@
 
     tap-detection;
     tap-timout-ms = <150>;
-    prevent_movement_during_tap;
 };
 
 / {

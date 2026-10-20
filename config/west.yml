@@ -4,14 +4,16 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: halfdane
       url-base: https://github.com/halfdane
+    - name: mcadams93
+      url-base: https://github.com/mcadams93
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: v0.3
       import: app/west.yml
     - name: zmk-input-gestures
-      remote: halfdane
-      revision: c6590627ec627f49582ee945b880762fc715c2c9
+      remote: mcadams93
+      revision: 6a58c8060c76fb7c88b8117e0d173e3b669b10e4
     - name: zmk-input-processors
       remote: halfdane
       revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
