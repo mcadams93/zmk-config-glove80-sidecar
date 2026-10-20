@@ -11,6 +11,6 @@ manifest:
       import: app/west.yml
     - name: cirque-input-module
       remote: tokyo2006
-      revision: 81b3fc2
+      revision: main
   self:
     path: config
