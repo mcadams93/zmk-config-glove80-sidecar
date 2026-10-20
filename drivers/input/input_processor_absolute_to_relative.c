@@ -18,6 +18,7 @@ struct absolute_to_relative_config {
 struct absolute_to_relative_data {
     uint16_t previous_x, previous_y;
     bool touching_x, touching_y;
+    uint8_t samples_x, samples_y;
     const struct device *dev;
     struct k_work_delayable touch_end_timeout_work;
 };
@@ -32,31 +33,43 @@ static int absolute_to_relative_handle_event(const struct device *dev, struct in
     if (event->type == INPUT_EV_ABS) {
         uint16_t value = event->value;
 
-        if (data->touching_x && event->code == INPUT_ABS_X) {
+        if (event->code == INPUT_ABS_X) {
+            if (!data->touching_x) {
+                data->touching_x = true;
+                data->samples_x = 0;
+            }
+            data->samples_x++;
+            if (data->samples_x <= 2) {
+                /* Suppress the first two samples after finger-down to
+                 * prevent cursor jump.  The first sample has no prior
+                 * reference and the second often carries a noisy delta. */
+                data->previous_x = value;
+                event->type = 0;
+                event->code = 0;
+                event->value = 0;
+            } else {
                 event->type = INPUT_EV_REL;
                 event->code = INPUT_REL_X;
                 event->value -= data->previous_x;
                 data->previous_x = value;
-        } else if (data->touching_y && event->code == INPUT_ABS_Y) {
+            }
+        } else if (event->code == INPUT_ABS_Y) {
+            if (!data->touching_y) {
+                data->touching_y = true;
+                data->samples_y = 0;
+            }
+            data->samples_y++;
+            if (data->samples_y <= 2) {
+                data->previous_y = value;
+                event->type = 0;
+                event->code = 0;
+                event->value = 0;
+            } else {
                 event->type = INPUT_EV_REL;
                 event->code = INPUT_REL_Y;
                 event->value -= data->previous_y;
                 data->previous_y = value;
-        } else if (!data->touching_x && event->code == INPUT_ABS_X) {
-            data->touching_x = true;
-            data->previous_x = event->value;
-            /* Suppress the first-touch event to prevent cursor jump.
-             * The absolute coordinate would otherwise pass through as a
-             * large value that ZMK interprets as a relative delta. */
-            event->type = 0;
-            event->code = 0;
-            event->value = 0;
-        } else if (!data->touching_y && event->code == INPUT_ABS_Y) { 
-            data->touching_y = true;
-            data->previous_y = event->value;
-            event->type = 0;
-            event->code = 0;
-            event->value = 0;
+            }
         }
     }
 
@@ -85,6 +98,8 @@ static const struct zmk_input_processor_driver_api absolute_to_relative_driver_a
     static struct absolute_to_relative_data processor_absolute_to_relative_data_##n = {                 \
         .touching_x = false,                                                                              \
         .touching_y = false,                                                                              \
+        .samples_x = 0,                                                                                   \
+        .samples_y = 0,                                                                                   \
     };                                                                                                  \
     static const struct absolute_to_relative_config processor_absolute_to_relative_config_##n = {       \
         .time_between_normal_reports = DT_INST_PROP_OR(n, time_between_normal_reports, 30),             \
