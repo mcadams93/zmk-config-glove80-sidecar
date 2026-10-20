@@ -55,8 +55,7 @@
     circular-scroll-rim-percent = <5>;
 
     tap-detection;
-    tap-timout-ms = <130>;
-    prevent_movement_during_tap;
+    tap-timout-ms = <150>;
     wait-for-new-position-ms = <20>;
 };
 
