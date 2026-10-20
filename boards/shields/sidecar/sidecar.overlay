@@ -36,7 +36,7 @@
         data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
         sensitivity = "1x";
         data-mode = "absolute";
-        absolute-relative-divisor = <8>;
+        absolute-relative-divisor = <4>;
         absolute-touch-min-z = <10>;
 
         primary-tap-enable;
@@ -47,8 +47,8 @@
         absolute-tap-drag-timeout-ms = <300>;
 
         absolute-right-edge-scroll-enable;
-        absolute-scroll-zone = <120>;
-        absolute-scroll-divisor = <80>;
+        absolute-scroll-zone = <240>;
+        absolute-scroll-divisor = <40>;
 
         sleep-mode-enable;
         invert-y;
