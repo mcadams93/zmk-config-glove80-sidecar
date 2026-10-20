@@ -1,4 +1,6 @@
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/zmk/input_transform.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 &pinctrl {
     spi3_default: spi3_default {
@@ -36,7 +38,8 @@
         data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
         sensitivity = "1x";
         data-mode = "absolute";
-        absolute-relative-divisor = <4>;
+        absolute-relative-multiplier = <11>;
+        absolute-relative-divisor = <40>;
         absolute-touch-min-z = <10>;
 
         primary-tap-enable;
@@ -51,6 +54,7 @@
         absolute-scroll-divisor = <40>;
 
         sleep-mode-enable;
+        invert-x;
         invert-y;
     };
 };
@@ -81,8 +85,17 @@
         kscan = <&sidecar_kscan>;
     };
 
+    glidepoint_transform: glidepoint_transform {
+        compatible = "zmk,input-processor-transform";
+        #input-processor-cells = <1>;
+        type = <INPUT_EV_REL>;
+        x-codes = <INPUT_REL_X>;
+        y-codes = <INPUT_REL_Y>;
+    };
+
     glidepoint_listener: glidepoint_listener {
         compatible = "zmk,input-listener";
         device = <&glidepoint>;
+        input-processors = <&glidepoint_transform INPUT_TRANSFORM_X_INVERT>;
     };
 };
