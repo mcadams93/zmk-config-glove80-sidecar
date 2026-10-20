@@ -1,1 +1,1 @@
-rsource "drivers/Kconfig"
+# No local Kconfig entries — all pointing config comes from tokyo2006/cirque-input-module

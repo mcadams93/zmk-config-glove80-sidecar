@@ -1,2 +1,1 @@
-add_subdirectory(drivers)
-zephyr_include_directories(${APPLICATION_SOURCE_DIR}/include)
+# No local build targets — all driver code comes from tokyo2006/cirque-input-module

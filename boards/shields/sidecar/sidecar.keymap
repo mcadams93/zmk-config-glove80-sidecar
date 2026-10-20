@@ -2,25 +2,11 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
-&zip_gestures {
-    tap-detection;
-    tap-timout-ms = <130>;
-    prevent_movement_during_tap;
-    circular-scroll;
-    circular-scroll-rim-percent = <12>;
-    circular-scroll-width = <1024>;
-    circular-scroll-height = <1024>;
-    inertial-cursor;
-    inertial-cursor-decay-percent = <96>;
-    wait-for-new-position-ms = <30>;
-};
-
 / {
     keymap {
         compatible = "zmk,keymap";
-        
+
         default_layer {
-            // Standalone sidecar - Base Layer leaves GPIO idle as trackpad handles inputs
             bindings = <
                 &none
             >;
