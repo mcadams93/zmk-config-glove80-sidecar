@@ -52,11 +52,12 @@
 
 &zip_gestures {
     circular-scroll;
-    circular-scroll-rim-percent = <10>;
+    circular-scroll-rim-percent = <5>;
 
     tap-detection;
-    tap-timout-ms = <180>;
+    tap-timout-ms = <130>;
     prevent_movement_during_tap;
+    wait-for-new-position-ms = <20>;
 };
 
 / {
