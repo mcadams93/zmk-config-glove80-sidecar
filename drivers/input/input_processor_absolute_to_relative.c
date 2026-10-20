@@ -11,6 +11,10 @@
 
 LOG_MODULE_REGISTER(absolute_to_relative, CONFIG_ZMK_LOG_LEVEL);
 
+/* Maximum plausible single-sample delta in absolute coordinates.
+ * Anything larger is a spurious jump (lift-off, first-touch residual, glitch). */
+#define MAX_DELTA 100
+
 struct absolute_to_relative_config {
     uint8_t time_between_normal_reports;
 };
@@ -48,10 +52,17 @@ static int absolute_to_relative_handle_event(const struct device *dev, struct in
                 event->code = 0;
                 event->value = 0;
             } else {
-                event->type = INPUT_EV_REL;
-                event->code = INPUT_REL_X;
-                event->value -= data->previous_x;
+                int16_t delta = (int16_t)(value - data->previous_x);
                 data->previous_x = value;
+                if (delta > MAX_DELTA || delta < -MAX_DELTA) {
+                    event->type = 0;
+                    event->code = 0;
+                    event->value = 0;
+                } else {
+                    event->type = INPUT_EV_REL;
+                    event->code = INPUT_REL_X;
+                    event->value = delta;
+                }
             }
         } else if (event->code == INPUT_ABS_Y) {
             if (!data->touching_y) {
@@ -65,10 +76,17 @@ static int absolute_to_relative_handle_event(const struct device *dev, struct in
                 event->code = 0;
                 event->value = 0;
             } else {
-                event->type = INPUT_EV_REL;
-                event->code = INPUT_REL_Y;
-                event->value -= data->previous_y;
+                int16_t delta = (int16_t)(value - data->previous_y);
                 data->previous_y = value;
+                if (delta > MAX_DELTA || delta < -MAX_DELTA) {
+                    event->type = 0;
+                    event->code = 0;
+                    event->value = 0;
+                } else {
+                    event->type = INPUT_EV_REL;
+                    event->code = INPUT_REL_Y;
+                    event->value = delta;
+                }
             }
         }
     }
