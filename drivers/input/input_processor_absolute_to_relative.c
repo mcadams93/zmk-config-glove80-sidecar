@@ -15,6 +15,61 @@ LOG_MODULE_REGISTER(absolute_to_relative, CONFIG_ZMK_LOG_LEVEL);
  * Anything larger is a spurious jump (lift-off, first-touch residual, glitch). */
 #define MAX_DELTA 100
 
+/* --- Acceleration curve (Apple-style non-linear) ---
+ * Slow finger movements get low gain for precision;
+ * fast movements get high gain for covering distance.
+ *
+ * We use integer-only piecewise linear interpolation.
+ * Speed thresholds are in absolute coordinate units per sample.
+ *
+ * |delta| <= ACCEL_SLOW:  multiply by ACCEL_SLOW_NUM / ACCEL_SLOW_DEN  (0.6x)
+ * |delta| >= ACCEL_FAST:  multiply by ACCEL_FAST_NUM / ACCEL_FAST_DEN  (2.5x)
+ * In between: linear interpolation between the two.
+ */
+#define ACCEL_SLOW      3
+#define ACCEL_FAST      15
+#define ACCEL_SLOW_NUM  3
+#define ACCEL_SLOW_DEN  5   /* 3/5 = 0.6x for micro-movements */
+#define ACCEL_FAST_NUM  5
+#define ACCEL_FAST_DEN  2   /* 5/2 = 2.5x for fast swipes */
+
+static inline int16_t apply_acceleration(int16_t delta) {
+    int16_t sign = (delta >= 0) ? 1 : -1;
+    int16_t mag = delta * sign; /* abs(delta) */
+
+    int32_t result;
+    if (mag <= ACCEL_SLOW) {
+        result = (int32_t)mag * ACCEL_SLOW_NUM / ACCEL_SLOW_DEN;
+    } else if (mag >= ACCEL_FAST) {
+        result = (int32_t)mag * ACCEL_FAST_NUM / ACCEL_FAST_DEN;
+    } else {
+        /* Linear interpolation between slow and fast gain.
+         * factor = slow_factor + (fast_factor - slow_factor) * (mag - ACCEL_SLOW)
+         *                                                     / (ACCEL_FAST - ACCEL_SLOW)
+         * To stay integer: compute numerator scaled by a common denominator.
+         *   slow_factor = ACCEL_SLOW_NUM / ACCEL_SLOW_DEN
+         *   fast_factor = ACCEL_FAST_NUM / ACCEL_FAST_DEN
+         * Common denom = ACCEL_SLOW_DEN * ACCEL_FAST_DEN = 10
+         * slow_scaled = ACCEL_SLOW_NUM * ACCEL_FAST_DEN = 6
+         * fast_scaled = ACCEL_FAST_NUM * ACCEL_SLOW_DEN = 25
+         */
+        int32_t slow_scaled = (int32_t)ACCEL_SLOW_NUM * ACCEL_FAST_DEN; /* 6 */
+        int32_t fast_scaled = (int32_t)ACCEL_FAST_NUM * ACCEL_SLOW_DEN; /* 25 */
+        int32_t range = ACCEL_FAST - ACCEL_SLOW; /* 12 */
+        int32_t pos = mag - ACCEL_SLOW;
+        int32_t factor_scaled = slow_scaled + (fast_scaled - slow_scaled) * pos / range;
+        int32_t common_den = (int32_t)ACCEL_SLOW_DEN * ACCEL_FAST_DEN; /* 10 */
+        result = (int32_t)mag * factor_scaled / common_den;
+    }
+
+    /* Ensure at least 1 unit of movement if there was any input */
+    if (result == 0 && mag > 0) {
+        result = 1;
+    }
+
+    return (int16_t)(result * sign);
+}
+
 struct absolute_to_relative_config {
     uint8_t time_between_normal_reports;
 };
@@ -61,7 +116,7 @@ static int absolute_to_relative_handle_event(const struct device *dev, struct in
                 } else {
                     event->type = INPUT_EV_REL;
                     event->code = INPUT_REL_X;
-                    event->value = delta;
+                    event->value = apply_acceleration(delta);
                 }
             }
         } else if (event->code == INPUT_ABS_Y) {
@@ -85,7 +140,7 @@ static int absolute_to_relative_handle_event(const struct device *dev, struct in
                 } else {
                     event->type = INPUT_EV_REL;
                     event->code = INPUT_REL_Y;
-                    event->value = delta;
+                    event->value = apply_acceleration(delta);
                 }
             }
         }
