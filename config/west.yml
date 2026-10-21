@@ -11,7 +11,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: 5b51501fead672c41b5cfb396f3dafe0894bf4e9
+      revision: cb615aee9a7c427e251f2ab62080c1a44a165da9
       import: app/west.yml
     - name: cirque-input-module
       remote: nxtkb
