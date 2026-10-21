@@ -55,7 +55,7 @@
 &zip_gestures {
     circular-scroll;
     tap-detection;
-    tap-timeout-ms = <150>;
+    tap-timout-ms = <150>;
     circular-scroll-rim-percent = <5>;
 };
 
