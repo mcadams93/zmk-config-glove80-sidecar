@@ -17,8 +17,5 @@ manifest:
     - name: zmk-input-processors
       remote: halfdane
       revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
-    - name: cirque-input-module
-      remote: halfdane
-      revision: 97676777223730abfa0e99c8d20a1ded70cb15fa
   self:
     path: config
