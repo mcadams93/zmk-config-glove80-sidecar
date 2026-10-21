@@ -38,6 +38,7 @@
         data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
 
         data-mode = "absolute";
+        sensitivity = "1x";
         clipping-enable;
         scaling-enable;
         active-range-x-min = <128>;
@@ -51,17 +52,16 @@
         absolute-relative-divisor = <40>;
 
         primary-tap-enable;
-        tap-max-ms = <200>;
-        tap-max-movement = <80>;
-        tap-click-ms = <10>;
-        tap-drag-timeout-ms = <300>;
+        absolute-tap-max-ms = <200>;
+        absolute-tap-max-movement = <80>;
+        absolute-tap-click-ms = <10>;
+        absolute-tap-drag-enable;
+        absolute-tap-drag-timeout-ms = <300>;
 
-        absolute-scroll-enable;
-        right-edge-scroll-enable;
+        absolute-right-edge-scroll-enable;
         absolute-scroll-zone = <240>;
         absolute-scroll-divisor = <40>;
 
-        sensitivity = <128>;
         invert-x;
     };
 };
