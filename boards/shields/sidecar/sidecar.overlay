@@ -38,8 +38,8 @@
         data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
         sensitivity = "1x";
         data-mode = "absolute";
-        absolute-relative-multiplier = <12>;
-        absolute-relative-divisor = <40>;
+        absolute-relative-multiplier = <1>;
+        absolute-relative-divisor = <1>;
         absolute-touch-min-z = <10>;
 
         primary-tap-enable;
@@ -93,9 +93,17 @@
         y-codes = <INPUT_REL_Y>;
     };
 
+    glidepoint_scaler: glidepoint_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_X INPUT_REL_Y>;
+        track-remainders;
+    };
+
     glidepoint_listener: glidepoint_listener {
         compatible = "zmk,input-listener";
         device = <&glidepoint>;
-        input-processors = <&glidepoint_transform INPUT_TRANSFORM_X_INVERT>;
+        input-processors = <&glidepoint_transform INPUT_TRANSFORM_X_INVERT>, <&glidepoint_scaler 12 40>;
     };
 };
