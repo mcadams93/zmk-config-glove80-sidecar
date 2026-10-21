@@ -6,14 +6,16 @@ manifest:
       url-base: https://github.com/halfdane
     - name: mcadams93
       url-base: https://github.com/mcadams93
+    - name: nxtkb
+      url-base: https://github.com/nxtkb
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: 5b51501fead672c41b5cfb396f3dafe0894bf4e9
       import: app/west.yml
     - name: cirque-input-module
-      remote: mcadams93
-      revision: e799898a292486881f5593beed833bdc3c6b7fb3
+      remote: nxtkb
+      revision: 8af03a4c061580c14ec8745caf0fa2dd3fc7f042
     - name: zmk-input-gestures
       remote: mcadams93
       revision: main
