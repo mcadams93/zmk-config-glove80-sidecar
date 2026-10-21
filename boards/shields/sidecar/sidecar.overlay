@@ -48,8 +48,8 @@
         scaling-x-resolution = <1024>;
         scaling-y-resolution = <1024>;
 
-        absolute-relative-multiplier = <12>;
-        absolute-relative-divisor = <40>;
+        absolute-relative-multiplier = <2>;
+        absolute-relative-divisor = <3>;
 
         primary-tap-enable;
         absolute-tap-max-ms = <200>;
