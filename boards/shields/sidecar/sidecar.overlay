@@ -54,13 +54,18 @@
         primary-tap-enable;
         absolute-tap-max-ms = <200>;
         absolute-tap-max-movement = <80>;
-        absolute-tap-click-ms = <10>;
+        absolute-tap-click-ms = <30>;
         absolute-tap-drag-enable;
         absolute-tap-drag-timeout-ms = <300>;
 
         absolute-right-edge-scroll-enable;
         absolute-scroll-zone = <240>;
         absolute-scroll-divisor = <40>;
+
+        absolute-secondary-tap-area-width = <520>;
+        absolute-secondary-tap-area-height = <420>;
+        absolute-touch-min-z = <12>;
+        idle-packets-count = <3>;
 
         invert-x;
     };
