@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: tokyo2006
       url-base: https://github.com/tokyo2006
+    - name: northwestisthebest
+      url-base: https://github.com/northwestisthebest
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -12,5 +14,8 @@ manifest:
     - name: cirque-input-module
       remote: tokyo2006
       revision: 81b3fc2
+    - name: zmk-360-mouse-extras
+      remote: northwestisthebest
+      revision: f7d0216873ce2f844dd813c1fb011ef0f95664ee
   self:
     path: .

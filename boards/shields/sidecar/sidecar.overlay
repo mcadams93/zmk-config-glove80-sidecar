@@ -93,9 +93,15 @@
         y-codes = <INPUT_REL_Y>;
     };
 
+    ble_throttle: ble_throttle {
+        compatible = "zmk,input-processor-ble-throttle";
+        #input-processor-cells = <0>;
+        period-ms = <8>;
+    };
+
     glidepoint_listener: glidepoint_listener {
         compatible = "zmk,input-listener";
         device = <&glidepoint>;
-        input-processors = <&glidepoint_transform INPUT_TRANSFORM_X_INVERT>;
+        input-processors = <&glidepoint_transform INPUT_TRANSFORM_X_INVERT>, <&ble_throttle>;
     };
 };
