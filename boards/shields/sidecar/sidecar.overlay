@@ -40,13 +40,15 @@
 
         data-ready-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
 
-        absolute-mode;
-        scale-to-width = <1024>;
-        scale-to-height = <1024>;
-        clamp-x-min = <128>;
-        clamp-x-max = <1920>;
-        clamp-y-min = <64>;
-        clamp-y-max = <1472>;
+        data-mode = "absolute";
+        clipping-enable;
+        scaling-enable;
+        active-range-x-min = <128>;
+        active-range-x-max = <1920>;
+        active-range-y-min = <64>;
+        active-range-y-max = <1472>;
+        scaling-x-resolution = <1024>;
+        scaling-y-resolution = <1024>;
     };
 };
 
