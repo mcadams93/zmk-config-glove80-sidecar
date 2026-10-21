@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/halfdane
     - name: mcadams93
       url-base: https://github.com/mcadams93
+    - name: northwestisthebest
+      url-base: https://github.com/northwestisthebest
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -20,5 +22,8 @@ manifest:
     - name: zmk-input-processors
       remote: halfdane
       revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
+    - name: zmk-360-mouse-extras
+      remote: northwestisthebest
+      revision: f7d0216873ce2f844dd813c1fb011ef0f95664ee
   self:
     path: config
