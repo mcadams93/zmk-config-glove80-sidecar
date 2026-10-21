@@ -2,20 +2,23 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: tokyo2006
-      url-base: https://github.com/tokyo2006
-    - name: northwestisthebest
-      url-base: https://github.com/northwestisthebest
+    - name: halfdane
+      url-base: https://github.com/halfdane
+    - name: mcadams93
+      url-base: https://github.com/mcadams93
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: main
+      revision: 5b51501fead672c41b5cfb396f3dafe0894bf4e9
       import: app/west.yml
+    - name: zmk-input-gestures
+      remote: mcadams93
+      revision: main
+    - name: zmk-input-processors
+      remote: halfdane
+      revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
     - name: cirque-input-module
-      remote: tokyo2006
-      revision: 81b3fc2
-    - name: zmk-360-mouse-extras
-      remote: northwestisthebest
-      revision: f7d0216873ce2f844dd813c1fb011ef0f95664ee
+      remote: halfdane
+      revision: 97676777223730abfa0e99c8d20a1ded70cb15fa
   self:
     path: .
