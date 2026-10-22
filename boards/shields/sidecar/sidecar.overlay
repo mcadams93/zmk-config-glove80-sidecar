@@ -62,7 +62,7 @@
         absolute-secondary-tap-area-height = <420>;
 
         absolute-right-edge-scroll-enable;
-        absolute-scroll-zone = <60>;
+        absolute-scroll-zone = <30>;
         absolute-scroll-divisor = <40>;
 
         invert-x;
