@@ -47,6 +47,7 @@
 
         absolute-relative-multiplier = <12>;
         absolute-relative-divisor = <40>;
+        absolute-touch-min-z = <12>;
 
         primary-tap-enable;
         absolute-tap-max-ms = <200>;
@@ -59,7 +60,7 @@
         absolute-secondary-tap-area-height = <420>;
 
         absolute-right-edge-scroll-enable;
-        absolute-scroll-zone = <30>;
+        absolute-scroll-zone = <80>;
         absolute-scroll-divisor = <40>;
 
         invert-x;
