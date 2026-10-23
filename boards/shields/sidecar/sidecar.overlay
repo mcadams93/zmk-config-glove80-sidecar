@@ -61,7 +61,7 @@
 
         absolute-right-edge-scroll-enable;
         absolute-scroll-zone = <240>;
-        absolute-scroll-divisor = <100>;
+        absolute-scroll-divisor = <40>;
 
         invert-x;
     };
