@@ -2,25 +2,10 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: halfdane
-      url-base: https://github.com/halfdane
-    - name: mcadams93
-      url-base: https://github.com/mcadams93
-    - name: nxtkb
-      url-base: https://github.com/nxtkb
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: cb615aee9a7c427e251f2ab62080c1a44a165da9
       import: app/west.yml
-    - name: cirque-input-module
-      remote: nxtkb
-      revision: 8af03a4c061580c14ec8745caf0fa2dd3fc7f042
-    - name: zmk-input-gestures
-      remote: mcadams93
-      revision: main
-    - name: zmk-input-processors
-      remote: halfdane
-      revision: 7d18ba7af91e485bbd9febda150505fb38ce6d8a
   self:
     path: config
